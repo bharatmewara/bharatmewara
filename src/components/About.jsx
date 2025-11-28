@@ -23,7 +23,7 @@ const About = () => {
                     >
                         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl blur-xl opacity-30 animate-pulse"></div>
                         <img
-                            src="/hero.png"
+                            src="/Profile/Bharat_Mewara.png"
                             alt="Bharat Mewara"
                             className="relative rounded-2xl shadow-2xl w-full object-cover border border-slate-700 hover:border-blue-400 transition-colors duration-300"
                         />

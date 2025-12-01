@@ -43,6 +43,8 @@ const Skills = () => {
                 { name: "Git/GitHub", level: "Expert" },
                 { name: "CI/CD", level: "Intermediate" },
                 { name: "Grafana", level: "Intermediate" },
+                { name: "Linux", level: "Advanced" },
+                { name: "Opensuse", level: "Expert" },
                 { name: "Jest/Testing", level: "Intermediate" },
                 { name: "Webpack/Vite", level: "Advanced" }
             ]

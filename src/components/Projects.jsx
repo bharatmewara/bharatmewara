@@ -82,12 +82,12 @@ const Projects = () => {
             demoLink: "#",
             featured: true,
             images: [
-                "./Projects/Athlistar/banner.png", // Shoe/Sport
-                "./Projects/Athlistar/1.png", // Dashboard
-                "./Projects/Athlistar/2.png",  // Athlete
-                "./Projects/Athlistar/3.png",  // Athlete
-                "./Projects/Athlistar/4.png",  // Athlete
-                "./Projects/Athlistar/5.png"  // Athlete
+                "/Projects/Athlistar/banner.png", // Shoe/Sport
+                "/Projects/Athlistar/1.png", // Dashboard
+                "/Projects/Athlistar/2.png",  // Athlete
+                "/Projects/Athlistar/3.png",  // Athlete
+                "/Projects/Athlistar/4.png",  // Athlete
+                "/Projects/Athlistar/5.png"  // Athlete
             ]
         },
         {

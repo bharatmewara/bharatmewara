@@ -107,13 +107,13 @@ const ProjectCard = ({ project, onClick }) => {
 
     return (
         <motion.div
-            className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer relative group"
+            className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer relative group h-[400px]"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
             onClick={onClick}
         >
-            <div className="h-48 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
-                <h3 className="text-2xl font-bold text-white text-center px-4">{project.title}</h3>
+            <div className="h-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
+                <h3 className="text-2xl font-bold text-white text-center">{project.title}</h3>
             </div>
 
             <AnimatePresence>
@@ -122,10 +122,10 @@ const ProjectCard = ({ project, onClick }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: 20 }}
-                        className="absolute inset-0 bg-slate-900/95 p-6 flex flex-col justify-center"
+                        className="absolute inset-0 bg-slate-900/95 p-6 flex flex-col"
                     >
-                        <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
-                        <p className="text-gray-300 text-sm mb-4 line-clamp-3">{project.description}</p>
+                        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                        <p className="text-gray-300 text-sm mb-4 line-clamp-4 flex-grow">{project.description}</p>
 
                         <div className="mb-4">
                             <h5 className="text-blue-400 text-xs font-bold uppercase mb-2">Key Features</h5>

@@ -25,7 +25,7 @@ const About = () => {
                         <img
                             src="/Profile/Bharat_Mewara.png"
                             alt="Bharat Mewara"
-                            className="relative rounded-2xl shadow-2xl w-full object-cover border border-slate-700 hover:border-blue-400 transition-colors duration-300"
+                            className="relative rounded-2xl shadow-2xl h-[70vh] w-auto max-w-full mx-auto object-contain border border-slate-700 hover:border-blue-400 transition-colors duration-300"
                         />
                     </motion.div>
 

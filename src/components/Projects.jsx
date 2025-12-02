@@ -178,7 +178,6 @@ const Projects = () => {
                 ],
                 techStack: ["React", "Firebase", "Authentication", "Firestore", "Tailwind CSS"],
                 clientName: "Jishan Ali",
-                linkedinProfile: "https://www.linkedin.com/in/alijishan",
                 githubLink: "https://github.com/bharatmewara/Athlistar",
                 demoLink: "https://athlistar.vercel.app/"
             },
@@ -193,7 +192,6 @@ const Projects = () => {
                 ],
                 techStack: ["Node.js", "Express.js", "MongoDB", "EJS"],
                 clientName: "Kuldeep Kumar",
-                linkedinProfile: "https://www.linkedin.com/in/whokuldeepkumar/",
                 githubLink: "https://github.com/bharatmewara/Wonderlust",
                 demoLink: "https://wonderlust-one.vercel.app/"
             },
@@ -208,7 +206,6 @@ const Projects = () => {
                 ],
                 techStack: ["React", "Node.js", "MongoDB", "Redux"],
                 clientName: "Rajveer Sharma",
-                linkedinProfile: "https://www.linkedin.com/in/rajveer-sharma-ab325b278/",
                 githubLink: "https://github.com/bharatmewara/BibaDemo",
                 demoLink: "https://biba-demo.vercel.app/"
             }
@@ -253,6 +250,19 @@ const Projects = () => {
                 techStack: ["Social Media Marketing", "PPC Campaigns", "Analytics", "Brand Strategy"],
                 clientName: "Mridul Sharma",
                 instagramHandle: "https://www.instagram.com/zzapkart/"
+            },
+            {
+                title: "SoulSyncFit Keshav",
+                description: "Holistic fitness and wellness brand promotion focusing on community engagement and personal transformation stories.",
+                features: [
+                    "Brand identity development",
+                    "Community building",
+                    "Content marketing",
+                    "Social media growth strategy"
+                ],
+                techStack: ["Instagram Growth", "Community Management", "Content Creation", "Brand Strategy"],
+                clientName: "Keshav Jaipuria",
+                instagramHandle: "https://www.instagram.com/soulsyncfit_keshav/"
             }
         ]
     };

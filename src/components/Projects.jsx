@@ -1,122 +1,277 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const ProjectSlideshow = ({ images, title }) => {
-    const [currentIndex, setCurrentIndex] = useState(0);
-
-    const nextSlide = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentIndex((prev) => (prev + 1) % images.length);
-    };
-
-    const prevSlide = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-        setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    };
+const ProjectModal = ({ project, isOpen, onClose }) => {
+    if (!isOpen) return null;
 
     return (
-        <div className="relative h-48 group overflow-hidden bg-slate-800">
-            <AnimatePresence mode='wait'>
-                <motion.img
-                    key={currentIndex}
-                    src={images[currentIndex]}
-                    alt={`${title} screenshot ${currentIndex + 1}`}
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="w-full h-full object-cover"
-                />
-            </AnimatePresence>
-
-            {/* Overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-slate-900/50 to-transparent opacity-60"></div>
-
-            {/* Navigation Buttons - Only show if more than 1 image */}
-            {images.length > 1 && (
-                <>
-                    <button
-                        onClick={prevSlide}
-                        className="absolute left-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
-                        aria-label="Previous image"
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-                        </svg>
-                    </button>
-                    <button
-                        onClick={nextSlide}
-                        className="absolute right-2 top-1/2 -translate-y-1/2 p-1 rounded-full bg-black/50 text-white opacity-0 group-hover:opacity-100 transition-opacity hover:bg-black/70"
-                        aria-label="Next image"
-                    >
-                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-                        </svg>
-                    </button>
-
-                    {/* Dots Indicator */}
-                    <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex space-x-1.5">
-                        {images.map((_, idx) => (
-                            <div
-                                key={idx}
-                                className={`w-1.5 h-1.5 rounded-full transition-colors ${idx === currentIndex ? 'bg-white' : 'bg-white/40'
-                                    }`}
-                            />
-                        ))}
+        <AnimatePresence>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/80 z-50 flex items-center justify-center p-4"
+                onClick={onClose}
+            >
+                <motion.div
+                    initial={{ scale: 0.8, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.8, opacity: 0 }}
+                    className="bg-slate-800 rounded-2xl p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto"
+                    onClick={(e) => e.stopPropagation()}
+                >
+                    <div className="flex justify-between items-start mb-6">
+                        <h3 className="text-3xl font-bold text-white">{project.title}</h3>
+                        <button onClick={onClose} className="text-gray-400 hover:text-white">
+                            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
                     </div>
-                </>
-            )}
-        </div>
+
+                    <div className="space-y-6">
+                        <div>
+                            <h4 className="text-lg font-semibold text-blue-400 mb-2">Description</h4>
+                            <p className="text-gray-300">{project.description}</p>
+                        </div>
+
+                        <div>
+                            <h4 className="text-lg font-semibold text-blue-400 mb-2">Features</h4>
+                            <ul className="text-gray-300 space-y-1">
+                                {project.features?.map((feature, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                        <span className="text-blue-400 mr-2">•</span>
+                                        {feature}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div>
+                            <h4 className="text-lg font-semibold text-blue-400 mb-2">Tech Stack</h4>
+                            <div className="flex flex-wrap gap-2">
+                                {project.techStack?.map((tech, idx) => (
+                                    <span key={idx} className="px-3 py-1 bg-slate-700 text-blue-300 rounded-full text-sm">
+                                        {tech}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+
+                        {project.clientName && (
+                            <div>
+                                <h4 className="text-lg font-semibold text-blue-400 mb-2">Client</h4>
+                                <p className="text-gray-300">{project.clientName}</p>
+                            </div>
+                        )}
+
+                        <div className="flex flex-wrap gap-4 pt-4">
+                            {project.instagramHandle && (
+                                <a href={project.instagramHandle} target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-pink-600 hover:bg-pink-700 text-white rounded-lg transition-colors flex items-center gap-2">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
+                                    Instagram
+                                </a>
+                            )}
+                            {project.linkedinProfile && (
+                                <a href={project.linkedinProfile} target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" /></svg>
+                                    LinkedIn
+                                </a>
+                            )}
+                            {project.githubLink && (
+                                <a href={project.githubLink} target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors flex items-center gap-2">
+                                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" /></svg>
+                                    Github
+                                </a>
+                            )}
+                            {project.demoLink && (
+                                <a href={project.demoLink} target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                    Live Demo
+                                </a>
+                            )}
+                        </div>
+                    </div>
+                </motion.div>
+            </motion.div>
+        </AnimatePresence>
+    );
+};
+
+const ProjectCard = ({ project, onClick }) => {
+    const [isHovered, setIsHovered] = useState(false);
+
+    return (
+        <motion.div
+            className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer relative group"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+            onClick={onClick}
+        >
+            <div className="h-48 bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center">
+                <h3 className="text-2xl font-bold text-white text-center px-4">{project.title}</h3>
+            </div>
+
+            <AnimatePresence>
+                {isHovered && (
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 20 }}
+                        className="absolute inset-0 bg-slate-900/95 p-6 flex flex-col justify-center"
+                    >
+                        <h3 className="text-xl font-bold text-white mb-3">{project.title}</h3>
+                        <p className="text-gray-300 text-sm mb-4 line-clamp-3">{project.description}</p>
+
+                        <div className="mb-4">
+                            <h5 className="text-blue-400 text-xs font-bold uppercase mb-2">Key Features</h5>
+                            <ul className="text-gray-400 text-xs space-y-1">
+                                {project.features?.slice(0, 2).map((feature, idx) => (
+                                    <li key={idx} className="flex items-start">
+                                        <span className="mr-1">•</span> {feature}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+
+                        <div className="flex flex-wrap gap-1 mb-3">
+                            {project.techStack?.slice(0, 3).map((tech, idx) => (
+                                <span key={idx} className="px-2 py-1 bg-blue-600 text-white rounded text-xs">
+                                    {tech}
+                                </span>
+                            ))}
+                        </div>
+                        <p className="text-blue-400 text-sm font-medium mt-auto">Click to view details</p>
+                    </motion.div>
+                )}
+            </AnimatePresence>
+        </motion.div>
     );
 };
 
 const Projects = () => {
-    const projects = [
-        {
-            title: "Athlistar",
-            description: "A comprehensive platform for athletes to showcase their profiles and connect with opportunities. Built with modern web technologies to ensure high performance and scalability.",
-            tags: ["React", "Node.js", "MongoDB", "Tailwind CSS"],
-            gitLink: "https://github.com/bharatmewara/Athlistar",
-            demoLink: "#",
-            featured: true,
-            images: [
-                "/Projects/Athlistar/banner.png", // Shoe/Sport
-                "/Projects/Athlistar/1.png", // Dashboard
-                "/Projects/Athlistar/2.png",  // Athlete
-                "/Projects/Athlistar/3.png",  // Athlete
-                "/Projects/Athlistar/4.png",  // Athlete
-                "/Projects/Athlistar/5.png"  // Athlete
-            ]
-        },
-        {
-            title: "WonderLust",
-            description: "A feature-rich web application designed for travel enthusiasts. Includes secure user authentication, destination sharing, and interactive maps.",
-            tags: ["Node.js", "Express.js", "MongoDB", "Auth"],
-            gitLink: "https://github.com/bharatmewara/Wonderlust",
-            demoLink: "#",
-            featured: false,
-            images: [
-                "https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Travel
-                "https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Map/Location
-                "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"  // Landscape
-            ]
-        },
-        {
-            title: "Self-Portfolio",
-            description: "This responsive portfolio website featuring advanced parallax animations, dark mode aesthetics, and mobile-first design principles.",
-            tags: ["React", "Framer Motion", "Tailwind CSS"],
-            gitLink: "https://github.com/bharatmewara/bharatmewara/tree/starter",
-            demoLink: "https://bharatmewara.vercel.app",
-            featured: false,
-            images: [
-                "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Code/Portfolio
-                "https://images.unsplash.com/photo-1555099962-4199c345e5dd?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Code screen
-                "https://images.unsplash.com/photo-1517180102446-f3ece451e9d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80"  // Modern desk
-            ]
-        }
+    const [selectedCategory, setSelectedCategory] = useState(null);
+    const [selectedProject, setSelectedProject] = useState(null);
+
+    const categories = [
+        { id: 'web', name: 'Web Development Projects', icon: '🌐' },
+        { id: 'app', name: 'Application Development Projects', icon: '📱' },
+        { id: 'marketing', name: 'Digital Marketing Achievements', icon: '📈' }
     ];
+
+    const projectsData = {
+        web: [
+            {
+                title: "Athlistar",
+                description: "Athlistar.com is a performance-driven platform built to provide personalized shoe consultation, athlete development, and access to sports coaching content. The goal is to help athletes find the right gear, grow within a community, and explore sponsorship opportunities.",
+                features: [
+                    "Athlete profile management",
+                    "Shoe matching system",
+                    "Athelete Sponsorship",
+                    "Athelete Coaching",
+                    "Exclusive Community",
+                    "Advanced search and filtering"
+                ],
+                techStack: ["React", "Firebase", "Authentication", "Firestore", "Tailwind CSS"],
+                clientName: "Jishan Ali",
+                linkedinProfile: "https://www.linkedin.com/in/alijishan",
+                githubLink: "https://github.com/bharatmewara/Athlistar",
+                demoLink: "https://athlistar.vercel.app/"
+            },
+            {
+                title: "WonderLust",
+                description: "A feature-rich web application designed for travel enthusiasts. Includes secure user authentication, destination sharing, and interactive maps.",
+                features: [
+                    "User authentication system",
+                    "Destination sharing platform",
+                    "Interactive maps integration",
+                    "Travel planning tools"
+                ],
+                techStack: ["Node.js", "Express.js", "MongoDB", "EJS"],
+                clientName: "Kuldeep Kumar",
+                linkedinProfile: "https://www.linkedin.com/in/whokuldeepkumar/",
+                githubLink: "https://github.com/bharatmewara/Wonderlust",
+                demoLink: "https://wonderlust-one.vercel.app/"
+            },
+            {
+                title: "Biba Ecommerce Store",
+                description: "A modern ecommerce platform with advanced shopping features, secure payment integration, and responsive design for optimal user experience.",
+                features: [
+                    "Product catalog management",
+                    "Shopping cart functionality",
+                    "Secure payment gateway",
+                    "Order tracking system"
+                ],
+                techStack: ["React", "Node.js", "MongoDB", "Redux"],
+                clientName: "Rajveer Sharma",
+                linkedinProfile: "https://www.linkedin.com/in/rajveer-sharma-ab325b278/",
+                githubLink: "https://github.com/bharatmewara/BibaDemo",
+                demoLink: "https://biba-demo.vercel.app/"
+            }
+        ],
+        app: [
+            {
+                title: "Coming Soon",
+                description: "Exciting application development projects are in the pipeline. Stay tuned for innovative mobile and desktop applications.",
+                features: [
+                    "Cross-platform compatibility",
+                    "Modern UI/UX design",
+                    "Performance optimization",
+                    "Scalable architecture"
+                ],
+                techStack: ["React Native", "Flutter", "Node.js", "Firebase"]
+            }
+        ],
+        marketing: [
+            {
+                title: "Abacus Mental Maths",
+                description: "Comprehensive digital marketing campaign for mental math education platform, focusing on brand awareness and student enrollment growth.",
+                features: [
+                    "Social media strategy development",
+                    "Content creation",
+                    "Engagement rate optimization",
+                    "Lead generation campaigns",
+                    "Post-campaign analytics"
+                ],
+                techStack: ["Instagram Marketing", "Content Strategy", "Analytics", "SEO"],
+                clientName: "Ranjana Kacholia",
+                instagramHandle: "https://www.instagram.com/abacus_mentalmaths/"
+            },
+            {
+                title: "Zzapkart",
+                description: "Strategic digital marketing initiatives for e-commerce platform, driving traffic, conversions, and brand recognition in competitive market.",
+                features: [
+                    "E-commerce marketing strategy",
+                    "Social media advertising",
+                    "Influencer collaborations",
+                    "Performance tracking and optimization"
+                ],
+                techStack: ["Social Media Marketing", "PPC Campaigns", "Analytics", "Brand Strategy"],
+                clientName: "Mridul Sharma",
+                instagramHandle: "https://www.instagram.com/zzapkart/"
+            }
+        ]
+    };
+
+    const handleCategorySelect = (categoryId) => {
+        setSelectedCategory(categoryId);
+    };
+
+    const handleProjectClick = (project) => {
+        setSelectedProject(project);
+    };
+
+    const handleCloseModal = () => {
+        setSelectedProject(null);
+    };
+
+    const handleBackToCategories = () => {
+        setSelectedCategory(null);
+    };
 
     return (
         <section id="projects" className="section-padding bg-slate-900 relative z-10">
@@ -127,72 +282,74 @@ const Projects = () => {
                     transition={{ duration: 0.5 }}
                     className="text-3xl md:text-5xl font-bold mb-16 text-center gradient-text"
                 >
-                    Featured Projects
+                    My Projects
                 </motion.h2>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {projects.map((project, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.5, delay: index * 0.1 }}
-                            className={`bg-slate-800 rounded-2xl overflow-hidden border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 group flex flex-col ${project.featured ? 'md:col-span-2 lg:col-span-1' : ''}`}
-                        >
-                            <ProjectSlideshow images={project.images} title={project.title} />
-
-                            <div className="p-8 flex-1 flex flex-col">
-                                <div className="mb-4">
-                                    <h3 className="text-2xl font-bold text-white group-hover:text-blue-400 transition-colors">
-                                        {project.title}
-                                    </h3>
+                {!selectedCategory ? (
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        {categories.map((category, index) => (
+                            <motion.div
+                                key={category.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.5, delay: index * 0.1 }}
+                                className="bg-slate-800 rounded-2xl p-8 border border-slate-700 hover:border-blue-500 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 cursor-pointer group"
+                                onClick={() => handleCategorySelect(category.id)}
+                            >
+                                <div className="text-6xl mb-6 text-center group-hover:scale-110 transition-transform">
+                                    {category.icon}
                                 </div>
-
-                                <p className="text-gray-300 mb-6 flex-1 leading-relaxed">
-                                    {project.description}
+                                <h3 className="text-xl font-bold text-white text-center group-hover:text-blue-400 transition-colors">
+                                    {category.name}
+                                </h3>
+                                <p className="text-gray-400 text-center mt-4">
+                                    {projectsData[category.id].length} Project{projectsData[category.id].length !== 1 ? 's' : ''}
                                 </p>
+                            </motion.div>
+                        ))}
+                    </div>
+                ) : (
+                    <div>
+                        <div className="flex items-center mb-8">
+                            <button
+                                onClick={handleBackToCategories}
+                                className="flex items-center text-blue-400 hover:text-blue-300 transition-colors"
+                            >
+                                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
+                                </svg>
+                                Back to Categories
+                            </button>
+                        </div>
 
-                                <div className="flex flex-wrap gap-4 mb-6">
-                                    <a
-                                        href={project.demoLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center space-x-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium text-sm"
-                                    >
-                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                        <span>Live Demo</span>
-                                    </a>
-                                    <a
-                                        href={project.gitLink}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="flex items-center space-x-2 px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition-colors font-medium text-sm"
-                                    >
-                                        <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
-                                            <path fillRule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clipRule="evenodd" />
-                                        </svg>
-                                        <span>GitHub Repo</span>
-                                    </a>
-                                </div>
+                        <h3 className="text-2xl font-bold text-white mb-8">
+                            {categories.find(cat => cat.id === selectedCategory)?.name}
+                        </h3>
 
-                                <div className="flex flex-wrap gap-2 mt-auto">
-                                    {project.tags.map((tag, idx) => (
-                                        <span
-                                            key={idx}
-                                            className="text-xs font-semibold inline-block py-1 px-3 uppercase rounded-full text-blue-200 bg-blue-900/40 border border-blue-900/50"
-                                        >
-                                            {tag}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
-                        </motion.div>
-                    ))}
-                </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            {projectsData[selectedCategory].map((project, index) => (
+                                <motion.div
+                                    key={index}
+                                    initial={{ opacity: 0, y: 30 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                                >
+                                    <ProjectCard
+                                        project={project}
+                                        onClick={() => handleProjectClick(project)}
+                                    />
+                                </motion.div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
+
+            <ProjectModal
+                project={selectedProject}
+                isOpen={!!selectedProject}
+                onClose={handleCloseModal}
+            />
         </section>
     );
 };

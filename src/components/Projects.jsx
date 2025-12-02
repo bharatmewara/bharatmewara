@@ -107,8 +107,8 @@ const Projects = () => {
             title: "Self-Portfolio",
             description: "This responsive portfolio website featuring advanced parallax animations, dark mode aesthetics, and mobile-first design principles.",
             tags: ["React", "Framer Motion", "Tailwind CSS"],
-            gitLink: "https://github.com/bharatmewara/animated-portfolio",
-            demoLink: "#",
+            gitLink: "https://github.com/bharatmewara/bharatmewara/tree/starter",
+            demoLink: "https://bharatmewara.vercel.app",
             featured: false,
             images: [
                 "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80", // Code/Portfolio

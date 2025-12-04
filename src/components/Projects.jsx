@@ -94,6 +94,13 @@ const ProjectModal = ({ project, isOpen, onClose }) => {
                                     Live Demo
                                 </a>
                             )}
+                            {project.Website && (
+                                <a href={project.Website} target="_blank" rel="noopener noreferrer"
+                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors flex items-center gap-2">
+                                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" /></svg>
+                                    Website
+                                </a>
+                            )}
                         </div>
                     </div>
                 </motion.div>
@@ -113,7 +120,7 @@ const ProjectCard = ({ project, onClick }) => {
             onClick={onClick}
         >
             <div className="h-full bg-gradient-to-br from-blue-600 to-purple-600 flex items-center justify-center p-6">
-                <h3 className="text-2xl font-bold text-white text-center">{project.title}</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-white text-center break-words">{project.title}</h3>
             </div>
 
             <AnimatePresence>
@@ -124,7 +131,7 @@ const ProjectCard = ({ project, onClick }) => {
                         exit={{ opacity: 0, y: 20 }}
                         className="absolute inset-0 bg-slate-900/95 p-6 flex flex-col"
                     >
-                        <h3 className="text-xl font-bold text-white mb-2">{project.title}</h3>
+                        <h3 className="text-lg font-bold text-white mb-2 break-words">{project.title}</h3>
                         <p className="text-gray-300 text-sm mb-4 line-clamp-4 flex-grow">{project.description}</p>
 
                         <div className="mb-4">
@@ -249,7 +256,8 @@ const Projects = () => {
                 ],
                 techStack: ["Social Media Marketing", "PPC Campaigns", "Analytics", "Brand Strategy"],
                 clientName: "Mridul Sharma",
-                instagramHandle: "https://www.instagram.com/zzapkart/"
+                instagramHandle: "https://www.instagram.com/zzapkart/",
+                Website: "https://zzapkart.com/"
             },
             {
                 title: "SoulSyncFit Keshav",
@@ -309,7 +317,7 @@ const Projects = () => {
                                 <div className="text-6xl mb-6 text-center group-hover:scale-110 transition-transform">
                                     {category.icon}
                                 </div>
-                                <h3 className="text-xl font-bold text-white text-center group-hover:text-blue-400 transition-colors">
+                                <h3 className="text-xl font-bold text-white text-center group-hover:text-blue-400 transition-colors break-words">
                                     {category.name}
                                 </h3>
                                 <p className="text-gray-400 text-center mt-4">
